@@ -45,5 +45,14 @@ def search_rating(rank):
     """
     return jsonify(rank_movies(rank))
 
+
+@app.route("/genre/<genre>")
+def search_genre(genre):
+    """
+    Вывод 10 свежих фильмов определенного жанра GET /genre/<genre>
+    """
+    return jsonify(fresh_movies(rank))
+
+
 if __name__ == "__main__":
     app.run(debug=True)
