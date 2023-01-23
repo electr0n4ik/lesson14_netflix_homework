@@ -39,9 +39,10 @@ def search_movie(title_movie):
     return result
 
 # 2
-def search_movie_years(years):
+def search_movie_years(year_1, year_2):
     """
-    Принимает количество годов(лет) для вывода
+    Принимает диапазон по типу 2000 - 2020, для вывода
+    Граничные года учитываются
     Выполняет SQL-запрос
     Возвращает информацию о фильмах в JSON
     Один фильм на один год
@@ -56,17 +57,19 @@ def search_movie_years(years):
     sqlite_query = f"""SELECT title, release_year AS years_films
                         FROM netflix
                         WHERE `type` = 'Movie'
+                        AND `release_year` >= {year_1}
+                        AND `release_year` <= {year_2}
                         GROUP BY release_year
-                        ORDER BY years_films DESC
+                        ORDER BY years_films ASC 
                         LIMIT 100
                         """
     cur.execute(sqlite_query)
     search_result = cur.fetchall()
 
-    for i in range(int(years)):
+    for i in search_result:
         list_movies.append({
-            "title": search_result[i][0],
-            "release_year": search_result[i][1],
+            "title": i[0],
+            "release_year": i[1],
         })
 
     return list_movies
@@ -222,12 +225,4 @@ def get_type_release_year(type, release_year):
                 "description": element[1]
             })
     return list_movies
-
-for i in get_type_release_year("TV Show", 2000):
-    print(i)
-
-# 5 for i in twins_cast("Jack Black", "Dustin Hoffman"):
-# 5    print(i)
-
-
 
