@@ -195,8 +195,39 @@ def twins_cast(name_1, name_2):
     return list_casts
 
 
+# 6
+def get_type_release_year(type, release_year):
+    """
+    Принимает тип картины (фильм или сериал),
+    год выпуска и на выходе список названий картин с их описаниями в JSON.
+    """
+    import  sqlite3
+    from flask import jsonify
+    list_movies = []
+    con = sqlite3.connect("netflix.db")
+    cur = con.cursor()
+    sqlite_query = f"""SELECT title, description, release_year, type
+        FROM netflix
+        WHERE `description` != '' 
+        """
+
+    cur.execute(sqlite_query)
+    search_result = cur.fetchall()
+
+    for element in search_result:
+        if type == element[3] and release_year == element[2]:
+
+            list_movies.append({
+                "title": element[0],
+                "description": element[1]
+            })
+    return list_movies
+
+for i in get_type_release_year("TV Show", 2000):
+    print(i)
+
+# 5 for i in twins_cast("Jack Black", "Dustin Hoffman"):
+# 5    print(i)
 
 
-# for i in twins_cast("Jack Black", "Dustin Hoffman"):
-#     print(i)
 
