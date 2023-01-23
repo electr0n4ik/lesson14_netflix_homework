@@ -132,7 +132,8 @@ def fresh_movies(genre):
     import sqlite3
 
     list_movies = []
-
+    con = sqlite3.connect("netflix.db")
+    cur = con.cursor()
     sqlite_query = f"""SELECT title, description
     FROM netflix
     WHERE `type` = 'Movie'
@@ -152,4 +153,50 @@ def fresh_movies(genre):
     return list_movies
 
 # 5
-def twince_
+def twins_cast(name_1, name_2):
+    """
+    TODO прочитал в обсуждении, что этот шаг нет необходимости делать
+    Функция к 5 шагу.
+    Получает в качестве аргумента имена двух актеров,
+    сохраняет всех актеров из колонки cast и возвращает список тех,
+    кто играет с ними в паре больше 2 раз.
+
+    В качестве теста можно передать:
+        "Rose McIver", "Ben Lamb"
+        "Jack Black", "Dustin Hoffman"
+    """
+    import sqlite3
+
+    list_casts = []
+    count = 0
+
+    con = sqlite3.connect("netflix.db")
+    cur = con.cursor()
+    sqlite_query = f"""SELECT `cast`
+        FROM netflix
+        WHERE `cast` != ''
+        """
+    cur.execute(sqlite_query)
+    search_result = cur.fetchall()
+
+    for element in search_result:
+        if name_1 in element:
+            count += 1
+            if count == 2:
+                list_casts.append(element)
+                count = 0
+
+        elif name_2 in element:
+            count += 1
+            if count == 2:
+                list_casts.append(element)
+                count = 0
+
+    return list_casts
+
+
+
+
+# for i in twins_cast("Jack Black", "Dustin Hoffman"):
+#     print(i)
+
