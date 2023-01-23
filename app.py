@@ -5,6 +5,22 @@ app = Flask(__name__)
 # Чтобы заработала кириллица
 app.config['JSON_AS_ASCII'] = False
 
+@app.errorhandler(404)
+def error_404(error):
+    """
+    Представление для ошибки "Страница не найдена"
+    """
+    return "<h1>Страница не найдена</h1>", 404
+
+
+@app.errorhandler(500)
+def internal_server_error(error):
+    """
+    Представление для ошибки "Внутренняя ошибка сервера"
+    """
+    return "<h1>Сервер не отвечает</h1>", 500
+
+
 @app.route("/movie/<title>")
 def search_page(title):
     """
@@ -22,21 +38,12 @@ def search_page_years(year):
     return jsonify(search_movie_years(year))
 
 
-@app.errorhandler(404)
-def error_404(error):
+@app.route("/rating/<rank>")
+def search_rating(rank):
     """
-    Представление для ошибки "Страница не найдена"
+    Вывод информации по рейтингу фильма GET /rating/<rank>
     """
-    return "<h1>Страница не найдена</h1>", 404
-
-
-@app.errorhandler(500)
-def internal_server_error(error):
-    """
-    Представление для ошибки "Внутренняя ошибка сервера"
-    """
-    return "<h1>Сервер не отвечает</h1>", 500
-
+    return jsonify(rank_movies(rank))
 
 if __name__ == "__main__":
     app.run(debug=True)
