@@ -10,8 +10,16 @@ def search_page(title):
     """
     Вывод информации по названию фильма GET /movie/<title>
     """
-    return search_movie(title)#jsonify(search_movie(title))
+    return jsonify(search_movie(title))#search_movie(title)
 
+
+@app.route("/movie/year/to/<year>")
+def search_page_years(year):
+    """
+    Вывод информации по названию фильма GET /movie/year/to/<year>
+    """
+
+    return jsonify(search_movie_years(year))
 
 
 @app.errorhandler(404)
