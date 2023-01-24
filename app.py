@@ -29,13 +29,13 @@ def search_page(title):
     return jsonify(search_movie(title))#search_movie(title)
 
 
-@app.route("/movie/year/to/<year>")
-def search_page_years(year):
+@app.route("/movie/<year_1>/to/<year_2>")
+def search_page_years(year_1, year_2):
     """
     Вывод информации по названию фильма GET /movie/year/to/<year>
     """
 
-    return jsonify(search_movie_years(year))
+    return jsonify(search_movie_years(year_1, year_2))
 
 
 @app.route("/rating/<rank>")
