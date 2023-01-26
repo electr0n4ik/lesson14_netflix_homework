@@ -77,7 +77,7 @@ def search_movie_years(year_1, year_2):
 # 3
 def rank_movies(rank):
     """
-    Принимает количество годов(лет) для вывода
+    Принимает возрастное ограничение
     Выполняет SQL-запрос
     Возвращает информацию о фильмах в JSON
     Один фильм на один год
@@ -127,31 +127,36 @@ def rank_movies(rank):
 # 4
 def fresh_movies(genre):
     """
-    TODO В базе данных нет жанров
     Принимает жанр для вывода
     Выполняет SQL-запрос
     Возвращает информацию о 10 свежих фильмах в JSON определенного жанра
     """
     import sqlite3
 
+    i = 0
     list_movies = []
     con = sqlite3.connect("netflix.db")
     cur = con.cursor()
-    sqlite_query = f"""SELECT title, description
+    sqlite_query = f"""SELECT title, description, listed_in
     FROM netflix
-    WHERE `type` = 'Movie'
+    WHERE type = 'Movie'
+    GROUP BY release_year
     ORDER BY release_year DESC 
-    LIMIT 10
     """
     cur.execute(sqlite_query)
     search_result = cur.fetchall()
 
     for element in search_result:
-        if genre == element[1]:
+
+        if i >= 10:
+            break
+        elif genre.lower() in element[2].lower():
             list_movies.append({
                 "title": element[0],
                 "description": element[1]
             })
+            i += 1
+    con.close()
 
     return list_movies
 

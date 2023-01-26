@@ -51,7 +51,7 @@ def search_genre(genre):
     """
     Вывод 10 свежих фильмов определенного жанра GET /genre/<genre>
     """
-    return jsonify(fresh_movies(rank))
+    return jsonify(fresh_movies(genre))
 
 
 if __name__ == "__main__":
